@@ -2,7 +2,7 @@
 
 This is a website for my tool:  
 
-### [GoAudit](https://github.com/KushalMeghani1644/goAudit)
+### [GoAudit](https://github.com/KushalMeghani1644/goAudit-CLI)
 
 A tool that checks whether a npm install or a curl | sh is malicious or not? 
 
@@ -23,7 +23,7 @@ Verdict: WARNING
 ## Install 
 
 ```zsh
-go install github.com/yourusername/goaudit@latest
+go install github.com/KushalMeghani1644/goaudit-CLI@latest
 ```
 
 ## Usage

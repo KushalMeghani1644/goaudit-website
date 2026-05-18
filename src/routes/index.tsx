@@ -47,7 +47,7 @@ function LandingPage() {
             </svg>
           </div>
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-            Secure your dependencies.
+            Audit your dependencies.
           </h1>
           <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
             GoAudit checks whether a{' '}
