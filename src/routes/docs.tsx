@@ -1,12 +1,20 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Copy } from 'lucide-react'
+import { Copy, Check } from 'lucide-react'
 
 export const Route = createFileRoute('/docs')({
   component: DocumentationPage,
 })
 
 function DocumentationPage() {
+  const [isCopied, setIsCopied] = React.useState(false)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText('go install github.com/KushalMeghani1644/GoAudit-CLI@latest')
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 2000)
+  }
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-800 dark:text-gray-200 flex font-sans transition-colors duration-200">
       <aside className="w-64 border-r border-gray-200 dark:border-gray-800 h-screen hidden md:block p-6 sticky top-0 flex flex-col">
@@ -44,10 +52,11 @@ function DocumentationPage() {
           </div>
 
           <h1 className="text-4xl font-bold mb-4 text-black dark:text-white">Introduction</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-            GoAudit is a tool that checks whether an <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">npm install</code> or a{' '}
-            <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">curl | sh</code> script is malicious by monitoring its behavior in a secure
-            sandbox.
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+            GoAudit is a utility for checking whether a package installation or script execution is malicious or not by monitoring its behavior in a secure sandbox. Currently, we natively support <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">npm</code>, <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">pnpm</code>, <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">bun</code>, and <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm">curl | sh</code> checks.
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-500 mb-8 p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg">
+            <strong>Important Note:</strong> GoAudit is not meant for proving absolute maliciousness, it just provides a risk assessment based on behavior and static indicators.
           </p>
 
           <hr className="my-8 border-gray-200 dark:border-gray-800" />
@@ -56,45 +65,65 @@ function DocumentationPage() {
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             Install the latest version of GoAudit directly using Go:
           </p>
-          <div className="flex items-center justify-between w-full bg-white dark:bg-gray-900 border border-blue-200 dark:border-gray-800 rounded-xl px-4 py-3 mb-8 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between w-full bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-lg px-4 py-3 mb-8 shadow-sm hover:shadow-md transition-shadow">
             <code className="font-mono text-sm text-gray-800 dark:text-gray-300">
-              go install github.com/KushalMeghani1644/goaudit@latest
+              go install github.com/KushalMeghani1644/GoAudit-CLI@latest
             </code>
             <button 
               className="text-blue-600 dark:text-gray-400 hover:text-blue-800 dark:hover:text-gray-200 transition-colors"
               aria-label="Copy to clipboard"
-              onClick={() => navigator.clipboard.writeText('go install github.com/KushalMeghani1644/goaudit@latest')}
+              onClick={handleCopy}
             >
-              <Copy size={18} />
+              {isCopied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
             </button>
+          </div>
+
+          <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Usage Examples</h2>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
+            GoAudit provides a simple UX for scanning commands. Here are the supported flags and package managers:
+          </p>
+          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8 p-6 text-gray-300 font-mono text-sm leading-loose">
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "npm install &lt;package&gt;"</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "pnpm add &lt;package&gt;"</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "bun add &lt;package&gt;"</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL https://example.com/install.sh | sh"</div>
+            <div className="mt-4 text-gray-400"># Output results as JSON for CI/CD</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "npm install &lt;package&gt;" --ci</div>
+            <div className="mt-4 text-gray-400"># Run the scan without network access</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL https://example.com/install.sh | sh" --offline</div>
+            <div className="mt-4 text-gray-400"># Allow specific domains and limit remote fetch depth</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL https://example.com/install.sh | sh" --allow-domain example.com --max-remote-depth 1</div>
+            <div className="mt-4 text-gray-400"># Specify custom Docker images for the sandbox</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "pnpm add &lt;package&gt;" --node-image node:current-slim</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan "bun add &lt;package&gt;" --bun-image oven/bun:1</div>
           </div>
 
           <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Demo Output</h2>
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             GoAudit intercepts file reads (like AWS credentials) and network calls.
           </p>
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-800 mb-8">
-            <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 flex gap-2 border-b border-gray-200 dark:border-gray-700">
-              <div className="w-3 h-3 rounded-full bg-red-400"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-              <div className="w-3 h-3 rounded-full bg-green-400"></div>
+          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8">
+            <div className="bg-[#2b2b36] px-4 py-3 flex gap-2 border-b border-[#3f3f4e]">
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             </div>
-            <div className="p-6 text-gray-800 dark:text-gray-300 font-mono text-sm leading-loose">
+            <div className="p-6 text-gray-300 font-mono text-sm leading-loose">
               <div>
-                <span className="text-blue-600 dark:text-blue-400">$</span> goaudit scan "cat ~/.aws/credentials"
+                <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>
-              <div className="text-red-600 dark:text-red-400 font-bold">
+              <div className="text-[#e06c75] font-bold">
                 [CRITICAL] File Read: /root/.aws/credentials
               </div>
-              <div className="text-gray-500 dark:text-gray-400">Verdict: <span className="text-red-600 dark:text-red-400 font-bold">CRITICAL ✗</span></div>
+              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">MALICIOUS ✗</span></div>
               <br />
               <div>
-                <span className="text-blue-600 dark:text-blue-400">$</span> goaudit scan "npm install lodash"
+                <span className="text-[#56b6c2]">$</span> goaudit scan "npm install lodash"
               </div>
-              <div className="text-yellow-600 dark:text-yellow-400 font-bold">
-                [WARNING] Network: registry.npmjs.org (104.16.2.34:443)
+              <div className="text-[#e5c07b] font-bold">
+                [WARNING] Suspicious Command Pattern: npm install lodash
               </div>
-              <div className="text-gray-500 dark:text-gray-400">Verdict: <span className="text-yellow-600 dark:text-yellow-400 font-bold">WARNING ⚠</span></div>
+              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
             </div>
           </div>
 
