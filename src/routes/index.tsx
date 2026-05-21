@@ -87,37 +87,36 @@ function LandingPage() {
         <main className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div>
-              <h3 className="text-2xl font-bold mb-3">Catch malicious scripts</h3>
+              <h3 className="text-2xl font-bold mb-3">Catch malicious behavior</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Runs installations in a secure container (via Docker & gVisor) to detect
-                if unexpected files (like AWS credentials or SSH keys) are accessed.
+                Runs executions in a secure sandbox with decoy honeypots to detect unexpected file access, process injection (ptrace), fileless execution (memfd_create), and backdoor listeners.
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-3">Seamless CI Integration</h3>
+              <h3 className="text-2xl font-bold mb-3">Full Project Scanning</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Use the{' '}
+                Use{' '}
                 <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --ci
+                  scan-project
                 </code>{' '}
-                flag to output JSON results directly into your automated pipelines.
+                to analyze entire JS codebases, including lockfile resolution and static registry checks for metadata anomalies and lifecycle scripts.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-3">Advanced Controls</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Configure your sandbox with flags like{' '}
+                Configure sandbox policies using flags like{' '}
                 <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --offline
+                  --network off
                 </code>
                 ,{' '}
                 <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --allow-domain
+                  --run-as-root
                 </code>
-                , or set custom container images with{' '}
+                , or fine-tune upgrades with{' '}
                 <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --node-image
-                </code>.
+                  --upgrade-mode
+                </code>. CI/CD integration is fully supported via JSON outputs.
               </p>
             </div>
           </div>
@@ -143,6 +142,15 @@ function LandingPage() {
               </div>
               <div className="text-[#e5c07b] font-bold">
                 [WARNING] Suspicious Command Pattern: npm install lodash
+              </div>
+              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
+              <br />
+              <div>
+                <span className="text-[#56b6c2]">$</span> goaudit scan-project . --include-transitive
+              </div>
+              <div className="text-gray-300">
+                Running static registry checks on 42 package(s)...<br />
+                [WARNING] lodash@4.17.21 defines postinstall script
               </div>
               <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
             </div>
