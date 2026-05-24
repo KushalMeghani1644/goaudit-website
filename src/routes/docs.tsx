@@ -49,7 +49,7 @@ function DocumentationPage() {
       </aside>
 
       <main className="flex-1 p-8 md:p-16 overflow-y-auto">
-        <div className="max-w-3xl">
+        <div className="max-w-3xl animate-fade-up">
           {/* Mobile Back Button */}
           <div className="md:hidden mb-8">
              <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 flex items-center gap-2 transition-colors">
@@ -105,7 +105,7 @@ function DocumentationPage() {
 
           <h2 id="demo-output" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Demo Output</h2>
           <p className="mb-4 text-gray-600 dark:text-gray-400">
-            GoAudit intercepts file reads (like AWS credentials) and network calls.
+            GoAudit intercepts file reads (like AWS credentials) and intelligently deduplicates network calls.
           </p>
           <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8">
             <div className="bg-[#2b2b36] px-4 py-3 flex gap-2 border-b border-[#3f3f4e]">
@@ -129,14 +129,28 @@ function DocumentationPage() {
                 [WARNING] Suspicious Command Pattern: npm install lodash
               </div>
               <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
+              <br />
+              <div>
+                <span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL example.com | sh"
+              </div>
+              <div className="text-[#e5c07b] font-bold">
+                [WARNING] Network Connection: example.com (93.184.216.34:80)
+              </div>
+              <div className="text-[#e5c07b] font-bold opacity-80">
+                [WARNING] ... and 3 more network connection(s) to 1 host(s) (use --ci for full details)
+              </div>
+              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
             </div>
           </div>
 
           <h2 id="advanced-security" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Advanced Security & Honeypots</h2>
-          <p className="mb-8 text-gray-600 dark:text-gray-400">
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
             GoAudit runs target commands as a non-root <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">sandbox</code> user by default to mimic a realistic environment. 
             It automatically injects highly realistic decoy credentials (honeypots) such as <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">.ssh/id_rsa</code>, <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">.aws/credentials</code>, and Kubernetes configs into the sandbox to bait malicious actors. 
             The expanded tracing engine actively monitors for process injection (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">ptrace</code>), fileless execution (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">memfd_create</code>), and unauthorized network port binding.
+          </p>
+          <p className="mb-8 text-gray-600 dark:text-gray-400">
+            <strong>Intelligent False Positive Filtering:</strong> Our tracing engine drastically cuts down noise by deduplicating redundant network calls and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations) before payload execution.
           </p>
 
           <h2 id="requirements" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Requirements</h2>
