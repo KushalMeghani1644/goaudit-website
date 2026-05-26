@@ -93,8 +93,8 @@ function DocumentationPage() {
             <div><span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL https://example.com/install.sh | sh"</div>
             <div className="mt-4 text-gray-400"># Scan an entire project (detects package manager automatically)</div>
             <div><span className="text-[#56b6c2]">$</span> goaudit scan-project .</div>
-            <div className="mt-4 text-gray-400"># Scan a project including transitive lockfile dependencies</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . --include-transitive</div>
+            <div className="mt-4 text-gray-400"># Show live findings during scan (verbose mode)</div>
+            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . -v</div>
             <div className="mt-4 text-gray-400"># Output results as JSON for CI/CD</div>
             <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . --ci</div>
             <div className="mt-4 text-gray-400"># Advanced sandbox controls</div>
@@ -117,29 +117,35 @@ function DocumentationPage() {
               <div>
                 <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>
-              <div className="text-[#e06c75] font-bold">
-                [CRITICAL] File Read: /root/.aws/credentials
+              <div className="text-gray-400 mt-2 leading-tight whitespace-pre">
+                {"╭─────────────────────────────────────────────╮\n"}
+                {"│  GoAudit Report: cat ~/.aws/credentials     │\n"}
+                {"╰─────────────────────────────────────────────╯"}
               </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">MALICIOUS ✗</span></div>
-              <br />
-              <div>
-                <span className="text-[#56b6c2]">$</span> goaudit scan "npm install lodash"
-              </div>
-              <div className="text-[#e5c07b] font-bold">
-                [WARNING] Suspicious Command Pattern: npm install lodash
-              </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
+              <div className="text-[#e06c75] font-bold mt-2">🚨 Verdict: malicious (confidence: 95)</div>
+              <div className="text-[#e06c75] font-bold mt-2">🔴 Critical Findings</div>
+              <div className="text-gray-300 whitespace-pre">   1. CREDENTIAL THEFT: /root/.aws/credentials</div>
+              <div className="text-gray-400 whitespace-pre">      └─ Read sensitive files like SSH keys, AWS credentials, or .env secrets</div>
+              <div className="text-gray-400 mt-2 whitespace-pre">📋 Summary: 1 critical, 0 warnings, 0 informational</div>
+              <div className="text-gray-400 whitespace-pre">   DO NOT INSTALL this package.</div>
               <br />
               <div>
                 <span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL example.com | sh"
               </div>
-              <div className="text-[#e5c07b] font-bold">
-                [WARNING] Network Connection: example.com (93.184.216.34:80)
+              <div className="text-gray-400 mt-2 leading-tight whitespace-pre">
+                {"╭─────────────────────────────────────────────╮\n"}
+                {"│  GoAudit Report: curl -fsSL example.com |...│\n"}
+                {"╰─────────────────────────────────────────────╯"}
               </div>
-              <div className="text-[#e5c07b] font-bold opacity-80">
-                [WARNING] ... and 3 more network connection(s) to 1 host(s) (use --ci for full details)
-              </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
+              <div className="text-[#e5c07b] font-bold mt-2">⚠️  Verdict: suspicious (confidence: 65)</div>
+              <div className="text-[#e5c07b] font-bold mt-2">⚠️  Warnings</div>
+              <div className="text-gray-300 whitespace-pre">   1. UNKNOWN NETWORK CONNECTION: example.com:80</div>
+              <div className="text-gray-400 whitespace-pre">      └─ Connected to a host that isn't a known package registry</div>
+              <div className="text-gray-400 mt-2 whitespace-pre">🌐 Network Activity</div>
+              <div className="text-gray-300 whitespace-pre">   • 1 connection(s) to example.com</div>
+              <div className="text-gray-300 whitespace-pre">   • 1 connection(s) to 1 host(s)</div>
+              <div className="text-gray-400 mt-2 whitespace-pre">📋 Summary: 0 critical, 1 warnings, 0 informational</div>
+              <div className="text-gray-400 whitespace-pre">   Use --ci for full JSON output.</div>
             </div>
           </div>
 
@@ -147,10 +153,10 @@ function DocumentationPage() {
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             GoAudit runs target commands as a non-root <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">sandbox</code> user by default to mimic a realistic environment. 
             It automatically injects highly realistic decoy credentials (honeypots) such as <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">.ssh/id_rsa</code>, <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">.aws/credentials</code>, and Kubernetes configs into the sandbox to bait malicious actors. 
-            The expanded tracing engine actively monitors for process injection (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">ptrace</code>), fileless execution (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">memfd_create</code>), and unauthorized network port binding.
+            The expanded tracing engine actively monitors for environment variable theft (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">/proc/self/environ</code>), process injection (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">ptrace</code>), fileless execution (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">memfd_create</code>), and unauthorized network port binding.
           </p>
           <p className="mb-8 text-gray-600 dark:text-gray-400">
-            <strong>Intelligent False Positive Filtering:</strong> Our tracing engine drastically cuts down noise by deduplicating redundant network calls and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations) before payload execution.
+            <strong>Intelligent False Positive Filtering:</strong> Our tracing engine drastically cuts down noise by deduplicating redundant network calls, suppressing expected behavior (like package manager registry queries or default lifecycle scripts), and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations) before payload execution.
           </p>
 
           <h2 id="requirements" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Requirements</h2>

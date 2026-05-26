@@ -89,13 +89,13 @@ function LandingPage() {
             <div>
               <h3 className="text-2xl font-bold mb-3">Catch malicious behavior</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Runs executions in a secure sandbox with decoy honeypots to detect unexpected file access, process injection (ptrace), fileless execution (memfd_create), and backdoor listeners.
+                Runs executions in a secure sandbox with decoy honeypots to detect unexpected file access, environment variable theft (/proc/self/environ), process injection (ptrace), fileless execution (memfd_create), and backdoor listeners.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-3">Intelligent False Positive Filtering</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Our tracing engine drastically cuts down noise by deduplicating redundant network calls and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations).
+                Our tracing engine drastically cuts down noise by deduplicating redundant network calls, suppressing expected behavior (like package manager registry queries or default lifecycle scripts), and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations).
               </p>
             </div>
             <div>
@@ -135,33 +135,34 @@ function LandingPage() {
             </div>
             <div className="p-6 text-gray-300 font-mono text-sm leading-loose">
               <div>
-                <span className="text-[#56b6c2]">$</span> goaudit scan "cat
-                ~/.aws/credentials"
+                <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>
-              <div className="text-[#e06c75] font-bold">
-                [CRITICAL] File Read: /root/.aws/credentials
+              <div className="text-gray-400 mt-2 leading-tight whitespace-pre">
+                {"╭─────────────────────────────────────────────╮\n"}
+                {"│  GoAudit Report: cat ~/.aws/credentials     │\n"}
+                {"╰─────────────────────────────────────────────╯"}
               </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">MALICIOUS ✗</span></div>
+              <div className="text-[#e06c75] font-bold mt-2">🚨 Verdict: malicious (confidence: 95)</div>
+              <div className="text-[#e06c75] font-bold mt-2">🔴 Critical Findings</div>
+              <div className="text-gray-300 whitespace-pre">   1. CREDENTIAL THEFT: /root/.aws/credentials</div>
+              <div className="text-gray-400 whitespace-pre">      └─ Read sensitive files like SSH keys, AWS credentials, or .env secrets</div>
+              <div className="text-gray-400 mt-2 whitespace-pre">📋 Summary: 1 critical, 0 warnings, 0 informational</div>
+              <div className="text-gray-400 whitespace-pre">   DO NOT INSTALL this package.</div>
               <br />
               <div>
-                <span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL example.com | sh"
+                <span className="text-[#56b6c2]">$</span> goaudit scan-project .
               </div>
-              <div className="text-[#e5c07b] font-bold">
-                [WARNING] Network Connection: example.com (93.184.216.34:80)
+              <div className="text-gray-400 mt-2 leading-tight whitespace-pre">
+                {"╭─────────────────────────────────────────────╮\n"}
+                {"│  GoAudit Report: scan-project .             │\n"}
+                {"╰─────────────────────────────────────────────╯"}
               </div>
-              <div className="text-[#e5c07b] font-bold opacity-80">
-                [WARNING] ... and 3 more network connection(s) to 1 host(s) (use --ci for full details)
-              </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
-              <br />
-              <div>
-                <span className="text-[#56b6c2]">$</span> goaudit scan-project . --include-transitive
-              </div>
-              <div className="text-gray-300">
-                Running static registry checks on 42 package(s)...<br />
-                [WARNING] lodash@4.17.21 defines postinstall script
-              </div>
-              <div className="text-gray-400">Verdict: <span className="text-gray-300 font-bold">SUSPICIOUS ⚠</span></div>
+              <div className="text-[#e5c07b] font-bold mt-2">⚠️  Verdict: suspicious (confidence: 45)</div>
+              <div className="text-[#e5c07b] font-bold mt-2">⚠️  Warnings</div>
+              <div className="text-gray-300 whitespace-pre">   1. PACKAGE HAS LIFECYCLE SCRIPT</div>
+              <div className="text-gray-400 whitespace-pre">      └─ The package defines a lifecycle script in its registry metadata</div>
+              <div className="text-gray-400 mt-2 whitespace-pre">📋 Summary: 0 critical, 1 warnings, 0 informational</div>
+              <div className="text-gray-400 whitespace-pre">   Use --ci for full JSON output.</div>
             </div>
           </div>
         </main>
