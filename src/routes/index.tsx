@@ -10,7 +10,7 @@ function LandingPage() {
   const [isCopied, setIsCopied] = React.useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('go install github.com/KushalMeghani1644/GoAudit-CLI@latest')
+    navigator.clipboard.writeText('go install github.com/KushalMeghani1644/GoAudit-CLI/cmd/goaudit@latest')
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 2000)
   }
@@ -71,7 +71,7 @@ function LandingPage() {
           <div className="mt-10 flex justify-center w-full max-w-lg mx-auto">
             <div className="flex items-center justify-between w-full bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-shadow">
               <code className="font-mono text-sm text-gray-800 dark:text-gray-300">
-                go install github.com/KushalMeghani1644/GoAudit-CLI@latest
+                go install github.com/KushalMeghani1644/GoAudit-CLI/cmd/goaudit@latest
               </code>
               <button 
                 className="text-blue-600 dark:text-gray-400 hover:text-blue-800 dark:hover:text-gray-200 transition-colors"
