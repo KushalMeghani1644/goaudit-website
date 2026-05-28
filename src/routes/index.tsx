@@ -143,6 +143,7 @@ function LandingPage() {
                 {"╰─────────────────────────────────────────────╯"}
               </div>
               <div className="text-[#e06c75] font-bold mt-2">🚨 Verdict: malicious (confidence: 95)</div>
+              <div className="text-gray-300 mt-1">🛡️  Sandbox: gVisor (runsc)</div>
               <div className="text-[#e06c75] font-bold mt-2">🔴 Critical Findings</div>
               <div className="text-gray-300 whitespace-pre">   1. CREDENTIAL THEFT: /root/.aws/credentials</div>
               <div className="text-gray-400 whitespace-pre">      └─ Read sensitive files like SSH keys, AWS credentials, or .env secrets</div>
@@ -158,6 +159,7 @@ function LandingPage() {
                 {"╰─────────────────────────────────────────────╯"}
               </div>
               <div className="text-[#e5c07b] font-bold mt-2">⚠️  Verdict: suspicious (confidence: 45)</div>
+              <div className="text-gray-300 mt-1">⚠️  Sandbox: runc (install gVisor for stronger isolation)</div>
               <div className="text-[#e5c07b] font-bold mt-2">⚠️  Warnings</div>
               <div className="text-gray-300 whitespace-pre">   1. PACKAGE HAS LIFECYCLE SCRIPT</div>
               <div className="text-gray-400 whitespace-pre">      └─ The package defines a lifecycle script in its registry metadata</div>

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Copy, Check } from 'lucide-react'
+import { Highlight, themes } from 'prism-react-renderer'
 
 export const Route = createFileRoute('/docs')({
   component: DocumentationPage,
@@ -45,6 +46,9 @@ function DocumentationPage() {
           <a href="#requirements" className="block hover:text-blue-600 text-gray-600 dark:text-gray-400 dark:hover:text-blue-400">
             Requirements
           </a>
+          <a href="#gvisor-setup" className="block hover:text-blue-600 text-gray-600 dark:text-gray-400 dark:hover:text-blue-400">
+            gVisor Setup
+          </a>
         </nav>
       </aside>
 
@@ -88,19 +92,43 @@ function DocumentationPage() {
           <p className="mb-4 text-gray-600 dark:text-gray-400">
             GoAudit provides a simple UX for scanning commands. Here are the supported flags and package managers:
           </p>
-          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8 p-6 text-gray-300 font-mono text-sm leading-loose">
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan "npm install &lt;package&gt;"</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan "curl -fsSL https://example.com/install.sh | sh"</div>
-            <div className="mt-4 text-gray-400"># Scan an entire project (detects package manager automatically)</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project .</div>
-            <div className="mt-4 text-gray-400"># Show live findings during scan (verbose mode)</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . -v</div>
-            <div className="mt-4 text-gray-400"># Output results as JSON for CI/CD</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . --ci</div>
-            <div className="mt-4 text-gray-400"># Advanced sandbox controls</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan "npm run build" --network off --run-as-root</div>
-            <div className="mt-4 text-gray-400"># Specify custom Docker images and upgrade strategies</div>
-            <div><span className="text-[#56b6c2]">$</span> goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu</div>
+          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8 text-sm leading-loose">
+            <Highlight
+              theme={themes.vsDark}
+              code={`$ goaudit scan "npm install <package>"
+$ goaudit scan "curl -fsSL https://example.com/install.sh | sh"
+
+# Scan an entire project (detects package manager automatically)
+$ goaudit scan-project .
+
+# Show live findings during scan (verbose mode)
+$ goaudit scan-project . -v
+
+# Output results as JSON for CI/CD
+$ goaudit scan-project . --ci
+
+# Advanced sandbox controls
+$ goaudit scan "npm run build" --network off --run-as-root
+
+# Specify custom Docker images and upgrade strategies
+$ goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu`}
+              language="bash"
+            >
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto whitespace-pre-wrap`} style={{ ...style, backgroundColor: 'transparent' }}>
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line })}>
+                      {line.map((token, key) => {
+                        if (token.content === '$') {
+                          return <span key={key} style={{ color: '#56b6c2' }}>{token.content}</span>
+                        }
+                        return <span key={key} {...getTokenProps({ token })} />
+                      })}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
           </div>
 
           <h2 id="demo-output" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Demo Output</h2>
@@ -123,6 +151,7 @@ function DocumentationPage() {
                 {"╰─────────────────────────────────────────────╯"}
               </div>
               <div className="text-[#e06c75] font-bold mt-2">🚨 Verdict: malicious (confidence: 95)</div>
+              <div className="text-gray-300 mt-1">🛡️  Sandbox: gVisor (runsc)</div>
               <div className="text-[#e06c75] font-bold mt-2">🔴 Critical Findings</div>
               <div className="text-gray-300 whitespace-pre">   1. CREDENTIAL THEFT: /root/.aws/credentials</div>
               <div className="text-gray-400 whitespace-pre">      └─ Read sensitive files like SSH keys, AWS credentials, or .env secrets</div>
@@ -138,6 +167,7 @@ function DocumentationPage() {
                 {"╰─────────────────────────────────────────────╯"}
               </div>
               <div className="text-[#e5c07b] font-bold mt-2">⚠️  Verdict: suspicious (confidence: 65)</div>
+              <div className="text-gray-300 mt-1">⚠️  Sandbox: runc (install gVisor for stronger isolation)</div>
               <div className="text-[#e5c07b] font-bold mt-2">⚠️  Warnings</div>
               <div className="text-gray-300 whitespace-pre">   1. UNKNOWN NETWORK CONNECTION: example.com:80</div>
               <div className="text-gray-400 whitespace-pre">      └─ Connected to a host that isn't a known package registry</div>
@@ -160,10 +190,70 @@ function DocumentationPage() {
           </p>
 
           <h2 id="requirements" className="text-2xl font-bold mb-4 text-black dark:text-white pt-8 -mt-8">Requirements</h2>
-          <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2">
+          <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-2 mb-8">
             <li>Docker installed and running</li>
             <li>gVisor (highly recommended for actual isolation)</li>
           </ul>
+
+          <h3 id="gvisor-setup" className="text-xl font-bold mb-4 text-black dark:text-white">gVisor (runsc) on Fedora / SELinux</h3>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
+            GoAudit uses gVisor when Docker lists <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runsc</code> in <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">docker info</code> Runtimes. Installing the <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runsc</code> binary is not enough, please register it in Docker (e.g. in <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">/etc/docker/daemon.json</code>):
+          </p>
+          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8 text-sm leading-loose">
+            <Highlight
+              theme={themes.vsDark}
+              code={`{
+  "runtimes": {
+    "runsc": {
+      "path": "/usr/local/bin/runsc",
+      "runtimeArgs": ["--debug=false", "--platform=ptrace"]
+    }
+  },
+  "default-runtime": "runc"
+}`}
+              language="json"
+            >
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto`} style={{ ...style, backgroundColor: 'transparent' }}>
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line })}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
+          </div>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
+            Use <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runsc help platform</code> to see valid <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">--platform</code> values. Restart Docker: <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">sudo systemctl restart docker</code>, then verify:
+          </p>
+          <div className="bg-[#1e1e24] rounded-2xl shadow-xl overflow-hidden border border-[#2b2b36] mb-8 text-sm leading-loose">
+            <Highlight
+              theme={themes.vsDark}
+              code={`docker info | grep -i runtimes`}
+              language="bash"
+            >
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto`} style={{ ...style, backgroundColor: 'transparent' }}>
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line })}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
+          </div>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
+            <strong>SELinux:</strong> gVisor cannot use Docker’s default container SELinux labels. GoAudit sets <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">--security-opt label=disable</code> automatically for <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runsc</code> containers.
+          </p>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">
+            <strong>Pre-built Node Sandbox & Runc Fallback:</strong> Many hosts cannot run <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">apt-get</code> inside a gVisor container. When gVisor is available, GoAudit pulls a pre-built image (<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">ghcr.io/kushalmeghani1644/goaudit-node-sandbox:latest</code>) which has scan tools pre-installed. If the gVisor sandbox preparation fails, GoAudit automatically <strong>retries once with runc</strong> and prints a warning. Without <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runsc</code> in Docker info, GoAudit falls back to <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 text-sm">runc</code>.
+          </p>
         </div>
       </main>
     </div>
