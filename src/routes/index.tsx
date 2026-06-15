@@ -84,56 +84,14 @@ function LandingPage() {
           </div>
         </header>
 
-        <main className="grid md:grid-cols-2 gap-12 items-center animate-fade-up">
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-3">Catch malicious behavior</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Runs executions in a secure sandbox with decoy honeypots to detect unexpected file access, environment variable theft (/proc/self/environ), process injection (ptrace), fileless execution (memfd_create), and backdoor listeners.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold mb-3">Intelligent False Positive Filtering</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Our tracing engine drastically cuts down noise by deduplicating redundant network calls, suppressing expected behavior (like package manager registry queries or default lifecycle scripts), and ignoring benign sandbox initialization (like <code>su/PAM</code> setuid operations).
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold mb-3">Full Project Scanning</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Use{' '}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  scan-project
-                </code>{' '}
-                to analyze entire JS codebases, including lockfile resolution and static registry checks for metadata anomalies and lifecycle scripts.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold mb-3">Advanced Controls</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Configure sandbox policies using flags like{' '}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --network off
-                </code>
-                ,{' '}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --run-as-root
-                </code>
-                , or fine-tune upgrades with{' '}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded text-sm text-gray-800 dark:text-gray-200">
-                  --upgrade-mode
-                </code>. CI/CD integration is fully supported via JSON outputs.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-[#1e1e24] rounded-2xl shadow-2xl overflow-hidden border border-[#2b2b36]">
+        <main className="animate-fade-up flex flex-col gap-16 w-full">
+          <div className="bg-[#1e1e24] w-full mx-auto rounded-2xl shadow-2xl overflow-hidden border border-[#2b2b36]">
             <div className="bg-[#2b2b36] px-4 py-3 flex gap-2 border-b border-[#3f3f4e]">
               <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
               <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
               <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             </div>
-            <div className="p-6 text-gray-300 font-mono text-sm leading-loose">
+            <div className="p-6 md:p-8 text-gray-300 font-mono text-sm md:text-base leading-loose overflow-x-auto">
               <div>
                 <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>
@@ -167,6 +125,90 @@ function LandingPage() {
               <div className="text-gray-400 whitespace-pre">   Use --ci for full JSON output.</div>
             </div>
           </div>
+
+          <section className="mt-8 mb-12">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                What GoAudit catches
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 border-y border-gray-200 dark:border-[#2b2b36] divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-[#2b2b36] mt-12 mb-24">
+              {/* Feature 1 */}
+              <div className="p-8 md:p-12 flex flex-col group">
+                <div className="text-[10px] font-mono tracking-widest text-cyan-700 dark:text-[#56b6c2] mb-12 uppercase opacity-80">FIG 0.1</div>
+                <div className="h-48 mb-12 flex items-center justify-center text-cyan-700 dark:text-[#56b6c2] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                  <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+                    {/* Hexagon containment field */}
+                    <polygon points="50,15 80,32 80,68 50,85 20,68 20,32" strokeDasharray="2 2" />
+                    {/* Inner solid box representing the trap */}
+                    <rect x="40" y="40" width="20" height="20" />
+                    <circle cx="50" cy="50" r="2" fill="currentColor" />
+                    {/* Lines connecting to center representing trapped behavior */}
+                    <path d="M20,32 L40,40" />
+                    <path d="M80,32 L60,40" />
+                    <path d="M50,85 L50,60" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Catch malicious behavior</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  Detect unauthorized file access, memory injections, and backdoors by running executions in a secure decoy sandbox.
+                </p>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="p-8 md:p-12 flex flex-col group">
+                <div className="text-[10px] font-mono tracking-widest text-amber-600 dark:text-[#e5c07b] mb-12 uppercase opacity-80">FIG 0.2</div>
+                <div className="h-48 mb-12 flex items-center justify-center text-amber-600 dark:text-[#e5c07b] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                  <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+                    {/* Top root node */}
+                    <circle cx="50" cy="20" r="5" />
+                    {/* Branches */}
+                    <path d="M50,25 L30,45" />
+                    <path d="M50,25 L70,45" />
+                    <path d="M30,55 L20,75" />
+                    <path d="M30,55 L40,75" />
+                    <path d="M70,55 L60,75" />
+                    <path d="M70,55 L80,75" />
+                    {/* Sub-nodes */}
+                    <rect x="25" y="45" width="10" height="10" />
+                    <rect x="65" y="45" width="10" height="10" />
+                    <circle cx="20" cy="80" r="3" />
+                    <circle cx="40" cy="80" r="3" />
+                    <circle cx="60" cy="80" r="3" />
+                    <circle cx="80" cy="80" r="3" />
+                    {/* Scanning beam line */}
+                    <line x1="10" y1="50" x2="90" y2="50" strokeWidth="1" strokeDasharray="4 4" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Full Project Scanning</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  Analyze JavaScript codebases, resolving lockfiles and verifying registry metadata to catch anomalies and risky lifecycle scripts.
+                </p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="p-8 md:p-12 flex flex-col group">
+                <div className="text-[10px] font-mono tracking-widest text-rose-600 dark:text-[#e06c75] mb-12 uppercase opacity-80">FIG 0.3</div>
+                <div className="h-48 mb-12 flex items-center justify-center text-rose-600 dark:text-[#e06c75] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                  <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+                    {/* Grid background */}
+                    <path d="M10,20 L90,20 M10,40 L90,40 M10,60 L90,60 M10,80 L90,80" strokeOpacity="0.2" />
+                    <path d="M20,10 L20,90 M40,10 L40,90 M60,10 L60,90 M80,10 L80,90" strokeOpacity="0.2" />
+                    {/* Noisy signal entering */}
+                    <path d="M10,50 Q20,20 30,50 T50,50" />
+                    {/* Filtered flat signal exiting */}
+                    <path d="M50,50 L90,50" strokeWidth="1" />
+                    {/* Filter boundary indicator */}
+                    <line x1="50" y1="20" x2="50" y2="80" strokeDasharray="2 2" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Intelligent Filtering</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  Reduce noise with an advanced tracing engine that deduplicates redundant calls and suppresses expected sandbox behavior.
+                </p>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
     </div>
