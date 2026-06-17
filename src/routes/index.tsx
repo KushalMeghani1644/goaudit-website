@@ -17,22 +17,22 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 font-sans selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100 flex flex-col transition-colors duration-200">
-      <nav className="flex justify-between items-center p-6 max-w-6xl mx-auto w-full">
+      <nav className="flex justify-between items-center p-4 sm:p-6 max-w-6xl mx-auto w-full">
         <div className="font-bold text-xl tracking-tight">GoAudit</div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <a
             href="https://github.com/KushalMeghani1644/goaudit"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg"
+            className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 sm:px-4 py-2 rounded-lg"
           >
             GitHub
           </a>
           <Link 
             to="/docs" 
-            className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2 rounded-lg"
+            className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 sm:px-4 py-2 rounded-lg"
           >
-            Documentation
+            Docs
           </Link>
         </div>
       </nav>
@@ -54,7 +54,7 @@ function LandingPage() {
               ></path>
             </svg>
           </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 break-words">
             Audit your dependencies.
           </h1>
           <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
@@ -70,7 +70,7 @@ function LandingPage() {
           </p>
           <div className="mt-10 flex justify-center w-full max-w-lg mx-auto">
             <div className="flex items-center justify-between w-full bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-shadow">
-              <code className="font-mono text-sm text-gray-800 dark:text-gray-300">
+              <code className="font-mono text-xs sm:text-sm text-gray-800 dark:text-gray-300 break-all mr-3">
                 go install github.com/KushalMeghani1644/GoAudit-CLI/cmd/goaudit@latest
               </code>
               <button 
@@ -91,7 +91,7 @@ function LandingPage() {
               <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
               <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             </div>
-            <div className="p-6 md:p-8 text-gray-300 font-mono text-sm md:text-base leading-loose overflow-x-auto">
+            <div className="p-4 sm:p-6 md:p-8 text-gray-300 font-mono text-xs sm:text-sm md:text-base leading-loose overflow-x-auto">
               <div>
                 <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>

@@ -52,7 +52,7 @@ function DocumentationPage() {
         </nav>
       </aside>
 
-      <main className="flex-1 p-8 md:p-16 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-8 md:p-16 overflow-y-auto w-full max-w-full">
         <div className="max-w-3xl animate-fade-up">
           {/* Mobile Back Button */}
           <div className="md:hidden mb-8">
@@ -76,7 +76,7 @@ function DocumentationPage() {
             Install the latest version of GoAudit directly using Go:
           </p>
           <div className="flex items-center justify-between w-full bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-lg px-4 py-3 mb-8 shadow-sm hover:shadow-md transition-shadow">
-            <code className="font-mono text-sm text-gray-800 dark:text-gray-300">
+            <code className="font-mono text-xs sm:text-sm text-gray-800 dark:text-gray-300 break-all mr-3">
               go install github.com/KushalMeghani1644/GoAudit-CLI/cmd/goaudit@latest
             </code>
             <button 
@@ -115,7 +115,7 @@ $ goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu`}
               language="bash"
             >
               {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto whitespace-pre-wrap`} style={{ ...style, backgroundColor: 'transparent' }}>
+                <pre className={`${className} p-4 sm:p-6 m-0 bg-transparent! overflow-x-auto whitespace-pre-wrap text-xs sm:text-sm`} style={{ ...style, backgroundColor: 'transparent' }}>
                   {tokens.map((line, i) => (
                     <div key={i} {...getLineProps({ line })}>
                       {line.map((token, key) => {
@@ -141,7 +141,7 @@ $ goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu`}
               <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
               <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             </div>
-            <div className="p-6 text-gray-300 font-mono text-sm leading-loose">
+            <div className="p-4 sm:p-6 text-gray-300 font-mono text-xs sm:text-sm leading-loose overflow-x-auto">
               <div>
                 <span className="text-[#56b6c2]">$</span> goaudit scan "cat ~/.aws/credentials"
               </div>
@@ -214,7 +214,7 @@ $ goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu`}
               language="json"
             >
               {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto`} style={{ ...style, backgroundColor: 'transparent' }}>
+                <pre className={`${className} p-4 sm:p-6 m-0 bg-transparent! overflow-x-auto text-xs sm:text-sm`} style={{ ...style, backgroundColor: 'transparent' }}>
                   {tokens.map((line, i) => (
                     <div key={i} {...getLineProps({ line })}>
                       {line.map((token, key) => (
@@ -236,7 +236,7 @@ $ goaudit scan-project . --node-image node:current-slim --upgrade-mode ncu`}
               language="bash"
             >
               {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={`${className} p-6 m-0 bg-transparent! overflow-x-auto`} style={{ ...style, backgroundColor: 'transparent' }}>
+                <pre className={`${className} p-4 sm:p-6 m-0 bg-transparent! overflow-x-auto text-xs sm:text-sm`} style={{ ...style, backgroundColor: 'transparent' }}>
                   {tokens.map((line, i) => (
                     <div key={i} {...getLineProps({ line })}>
                       {line.map((token, key) => (
