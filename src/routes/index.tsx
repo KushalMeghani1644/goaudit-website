@@ -132,9 +132,9 @@ function LandingPage() {
                 What GoAudit catches
               </h2>
             </div>
-            <div className="grid md:grid-cols-3 border-y border-gray-200 dark:border-[#2b2b36] divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-[#2b2b36] mt-12 mb-24">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 dark:bg-[#2b2b36] mt-12 mb-24 border-y border-gray-200 dark:border-[#2b2b36]">
               {/* Feature 1 */}
-              <div className="p-8 md:p-12 flex flex-col group">
+              <div className="p-8 md:p-12 flex flex-col group bg-[#fafafa] dark:bg-[#0a0a0a]">
                 <div className="text-[10px] font-mono tracking-widest text-cyan-700 dark:text-[#56b6c2] mb-12 uppercase opacity-80">FIG 0.1</div>
                 <div className="h-48 mb-12 flex items-center justify-center text-cyan-700 dark:text-[#56b6c2] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                   <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
@@ -156,7 +156,7 @@ function LandingPage() {
               </div>
 
               {/* Feature 2 */}
-              <div className="p-8 md:p-12 flex flex-col group">
+              <div className="p-8 md:p-12 flex flex-col group bg-[#fafafa] dark:bg-[#0a0a0a]">
                 <div className="text-[10px] font-mono tracking-widest text-amber-600 dark:text-[#e5c07b] mb-12 uppercase opacity-80">FIG 0.2</div>
                 <div className="h-48 mb-12 flex items-center justify-center text-amber-600 dark:text-[#e5c07b] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                   <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
@@ -187,7 +187,7 @@ function LandingPage() {
               </div>
 
               {/* Feature 3 */}
-              <div className="p-8 md:p-12 flex flex-col group">
+              <div className="p-8 md:p-12 flex flex-col group bg-[#fafafa] dark:bg-[#0a0a0a]">
                 <div className="text-[10px] font-mono tracking-widest text-rose-600 dark:text-[#e06c75] mb-12 uppercase opacity-80">FIG 0.3</div>
                 <div className="h-48 mb-12 flex items-center justify-center text-rose-600 dark:text-[#e06c75] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                   <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
@@ -205,6 +205,26 @@ function LandingPage() {
                 <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Intelligent Filtering</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                   Reduce noise with an advanced tracing engine that deduplicates redundant calls and suppresses expected sandbox behavior.
+                </p>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="p-8 md:p-12 flex flex-col group bg-[#fafafa] dark:bg-[#0a0a0a]">
+                <div className="text-[10px] font-mono tracking-widest text-emerald-600 dark:text-[#98c379] mb-12 uppercase opacity-80">FIG 0.4</div>
+                <div className="h-48 mb-12 flex items-center justify-center text-emerald-600 dark:text-[#98c379] opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                  <svg className="w-full h-full max-w-[140px]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+                    {/* Security shield / lock icon */}
+                    <path d="M50 15 L20 30 L20 60 Q50 90 50 90 Q50 90 80 60 L80 30 Z" strokeDasharray="2 2" />
+                    <rect x="40" y="45" width="20" height="15" />
+                    <path d="M45 45 v -5 a 5 5 0 0 1 10 0 v 5" />
+                    <circle cx="50" cy="52" r="2" fill="currentColor" />
+                    {/* Escalation arrow */}
+                    <path d="M50 35 L50 15 M45 20 L50 15 L55 20" strokeWidth="1" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Catch Privilege Escalation</h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                  Identify attempts to elevate privileges, run setuid/setgid binaries, or modify critical system configurations during execution.
                 </p>
               </div>
             </div>
